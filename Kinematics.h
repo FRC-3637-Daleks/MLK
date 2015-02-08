@@ -14,10 +14,14 @@ public:
 	
 public:
 	void update(const Cartesian& currentAcceleration);
-	void getVelocity() const {return velocity;};
-	void getPosition() const {return position;};	
+	const Cartesian getVelocity() const {return velocity;};
+	const Cartesian getPosition() const {return position;};
+    
+public:
+    void setPosition(const Cartesian &pos) {position = pos;};
+    void resetVelocity() {velocity = Cartesian();};
 };
 
 
 
-#endif _KINEMATICS_H_
+#endif /*_KINEMATICS_H_*/
