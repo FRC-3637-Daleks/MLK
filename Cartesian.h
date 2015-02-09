@@ -6,11 +6,13 @@
 struct Cartesian
 {
 public:
-	double x, y, z;
+	double m_x, m_y, m_z;
 	
 public:
-	Cartesian(const double ix=0.0, const double iy=0.0, const double iz=0.0);
+	constexpr Cartesian(const double ix=0.0, const double iy=0.0, const double iz=0.0): m_x(ix), m_y(iy), m_z(iz) {};
 	Cartesian(const Cartesian &other);
+    void operator() (const double ix=0.0, const double iy=0.0, const double iz=0.0);
+    Cartesian& operator= (const Cartesian& other);
 	
 public:
 	Cartesian& add(const Cartesian& other);
