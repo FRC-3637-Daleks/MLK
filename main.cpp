@@ -15,7 +15,7 @@ int main()
     cout<<"Razor initialized"<<endl;
     while(true)
     {
-        cout<<"a.x="<<razor.getStuff()->getAcceleration().m_x<<", a.y="<<razor.getStuff()->getAcceleration().m_y<<endl;
+        cout<<"v.x="<<razor.getStuff()->getVelocity().m_x<<", v.y="<<razor.getStuff()->getVelocity().m_y<<endl;
     }
     
     return 0;

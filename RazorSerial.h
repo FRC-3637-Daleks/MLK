@@ -12,12 +12,13 @@ class RazorSerial
 private:
     istream *input;
     Kinematics us;
+    int calibrations;
     
 private:
     const bool update();
     
 public:
-    RazorSerial(istream * const in, const Cartesian initPos=Cartesian()): input(in), us(initPos) {};
+    RazorSerial(istream * const in, const Cartesian initPos=Cartesian()): input(in), us(initPos, Cartesian(), 40), calibrations(0) {};
     
 public:
     const Kinematics * const getStuff();

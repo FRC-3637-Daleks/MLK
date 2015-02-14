@@ -1,16 +1,30 @@
 #include <math.h>
 #include "Kinematics.h"
 
-void Kinematics::calibrateGravity(const double roll, const double pitch, const double yaw)
+void Kinematics::calibrateGravity(const Cartesian g)
 {
-    Cartesian sumGrav(gravity.m_x*calibration, gravity.m_y*calibration, gravity.m_z*calibration);
-    sumGrav.add(Cartesian(MAGNITUDE_GRAVITY*sin(roll), MAGNITUDE_GRAVITY*sin(pitch), MAGNITUDE_GRAVITY*cos(yaw)));
-    calibration++;
-    gravity(sumGrav.m_x/calibration, sumGrav.m_y/calibration, sumGrav.m_z/calibration);
+    if(calibration == 0)
+        return;
+    Cartesian sumGrav(gravity.m_x*gravs.size(), gravity.m_y*gravs.size(), gravity.m_z*gravs.size());
+    sumGrav.add(g);
+    gravs.push(g);
+    if(gravs.size() >= calibration)
+    {
+        sumGrav.subtract(gravs.front());
+        gravs.pop();
+    }
+    gravity(sumGrav.m_x/gravs.size(), sumGrav.m_y/gravs.size(), sumGrav.m_z/gravs.size());
 }
 
-void Kinematics::update(const Cartesian& rawAcceleration)
+void Kinematics::resetGravity()
 {
+    while(!gravs.empty()) gravs.pop();
+}
+
+void Kinematics::update(const Cartesian& rawAcceleration, const bool calibrate)
+{
+    if(calibrate)
+        calibrateGravity(rawAcceleration);
 	acceleration = Cartesian::Diff(rawAcceleration, gravity);
 	auto halfVel(velocity);                 // old velocity
 	velocity.add(getAcceleration());      // new velocity
@@ -18,3 +32,6 @@ void Kinematics::update(const Cartesian& rawAcceleration)
 	halfVel(halfVel.m_x/2.0, halfVel.m_y/2.0, halfVel.m_z/2.0);   // average of the two
 	position.add(halfVel);  // new position
 }
+
+
+

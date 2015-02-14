@@ -1,6 +1,7 @@
 #ifndef _CARTESIAN_H_
 #define _CARTESIAN_H_
 
+#include <math.h>
 #include <stdlib.h>
 
 struct Cartesian
@@ -16,6 +17,10 @@ public:
 	
 public:
 	Cartesian& add(const Cartesian& other);
+    Cartesian& subtract(const Cartesian& other) {return add(Cartesian(-other.m_x, -other.m_y, -other.m_z));};
+    
+public:
+    double getMag() const {return sqrt(m_x*m_x+m_y*m_y+m_z*m_z);};
 	
 public:
 	static const Cartesian Add(const Cartesian& lArg, const Cartesian& rArg);

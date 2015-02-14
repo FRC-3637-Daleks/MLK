@@ -17,11 +17,10 @@ const bool RazorSerial::update()
     sscanf(buf, "!ANG:%f,%f,%f,ACC:%d,%d,%d", &roll, &pitch, &yaw, &y, &x, &z);
     Cartesian accel(x, y, z);
     
-    if(us.getCalibration() < 10)
-        us.calibrateGravity(DEGREES_TO_RADIANS(roll), DEGREES_TO_RADIANS(pitch), DEGREES_TO_RADIANS(yaw));
-    
-    us.update(accel);
-    
+    if(calibrations++ < 40)
+        us.update(accel, true);
+    else
+        us.update(accel);
     
     return true;
 }
